@@ -1,0 +1,2 @@
+# Preserve the reviewed mod and screenshot bytes across Git checkouts.
+* -text

@@ -1,0 +1,12 @@
+{
+  "schemaVersion": 3,
+  "id": "evejs-localtime-zone-patch",
+  "displayName": "EveJS Localtime zone Patch",
+  "version": "0.1.0",
+  "description": "The Neocom clock shows each player's computer time and follows their local timezone and daylight saving settings. Server time stays unchanged. No menu or configuration.",
+  "kind": "loader",
+  "supportedBackends": ["native"],
+  "activation": {"strategy": "loader_rename"},
+  "restart": "game_server",
+  "compatibility": {"evejsVersions": ["0.12.9"]}
+}
