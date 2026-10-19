@@ -26,6 +26,16 @@ The previous 0.12.9 source is retained as a separate exact approved baseline.
 - Clock tests execute authored code plus the previously inspected build-3396210
   widget classes, using UI and service doubles. The server protocol profile
   still targets client build 3396210.
+- Seven release-contract checks verify deterministic public bytes, a complete
+  ZIP/sidecar/checksum set, exact payload contents, required update source and
+  rejection of mismatched tags, missing notes or changed release assets.
+- The production Launcher checker accepts the matching release metadata for a
+  0.1.0 installation after the one-time source addition and returns no update
+  for an already installed 0.1.1. Its actual package replacement pipeline passes
+  in separate enabled and disabled disposable roots, retaining those states and
+  unrelated files. The initial 0.1.0/0.1.1 packages are confirmed to lack update
+  discovery; this corrected package keeps all four original 0.1.1 runtime files
+  byte for byte.
 
 No live server or client was started or restarted for these checks. No account,
 player database, operating-system clock or timezone setting was changed. The

@@ -25,9 +25,24 @@ In the EveJS Launcher, use Mods -> Add ZIP and select
 reconnect each EVE client. A client already logged in keeps its old clock until
 it reconnects to a server started with the mod enabled.
 
-If version 0.1.0 is already installed, stop Game and remove its Localtime entry
-through Mods before adding the 0.1.1 ZIP. This mod has no saved configuration
-to transfer. Enable the new entry, restart Game, and reconnect clients.
+### One-time migration from the earlier packages
+
+Version 0.1.0 and the first 0.1.1 download did not declare an update source, so
+those installed copies cannot discover an update automatically. The first
+0.1.1 release was withdrawn and replaced with this corrected 0.1.1 package.
+The runtime is identical to that first 0.1.1 download; only update metadata,
+documentation and release tooling were added.
+
+For either earlier package, stop Game and remove its Localtime entry through
+Mods, then add the corrected 0.1.1 ZIP. This mod has no saved configuration to
+transfer. Enable it, restart Game, and reconnect clients. Future releases can
+then use the Launcher's normal Check for updates / Update controls. Reinstalling
+the corrected package is a one-time step, not a requirement for every update.
+
+An existing 0.1.1 installation with the matching `updates` object added to its
+manifest is already current and will not offer another 0.1.1 update. The
+Launcher compares version numbers, not download dates. See
+[RELEASING.md](RELEASING.md) for the exact declaration and release checks.
 
 For a manual Native launch, extract this package under `mods/LocaltimeZonePatch`
 and preload `loader.js` with Node's `--require` before `server/index.js`.
@@ -63,3 +78,6 @@ The client records a small status log at
 ## Verification
 
 See `VERIFICATION.md` for the checks and the limit of live in-game coverage.
+
+For reproducible release packaging and the required update sidecar, see
+[RELEASING.md](RELEASING.md).

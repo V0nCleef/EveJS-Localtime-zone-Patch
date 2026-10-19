@@ -8,5 +8,12 @@
   "supportedBackends": ["native"],
   "activation": {"strategy": "loader_rename"},
   "restart": "game_server",
-  "compatibility": {"evejsVersions": ["0.12.9", "261018.1"]}
+  "compatibility": {"evejsVersions": ["0.12.9", "261018.1"]},
+  "updates": {
+    "provider": "github",
+    "repository": "V0nCleef/EveJS-Localtime-zone-Patch",
+    "asset": "EveJS-Localtime-zone-Patch-{version}.zip",
+    "channel": "stable",
+    "tagPrefix": "v"
+  }
 }
