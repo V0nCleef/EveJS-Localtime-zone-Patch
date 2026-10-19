@@ -25,8 +25,6 @@ function install(root = resolveRoot()) {
   }
   const key = Symbol.for(KEY);
   if (globalThis[key]) return globalThis[key];
-  const version = JSON.parse(fs.readFileSync(path.join(root, "server/package.json"), "utf8")).version;
-  if (version !== "0.12.9") throw new Error("This build supports EveJS 0.12.9 Native");
   const handshakeFile = path.join(root, "server/src/network/tcp/handshake.js");
   if (!supportsHandshake(fs.readFileSync(handshakeFile, "utf8"))) {
     throw new Error("Unsupported login builder; server and client clocks were not changed");
@@ -53,7 +51,7 @@ function install(root = resolveRoot()) {
     return exports;
   };
   globalThis[key] = state;
-  console.log("[EveJS Localtime zone Patch] v0.1.0 enabled; each client uses its own local timezone");
+  console.log("[EveJS Localtime zone Patch] v0.1.1 enabled; each client uses its own local timezone");
   return state;
 }
 

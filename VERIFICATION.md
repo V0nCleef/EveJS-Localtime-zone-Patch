@@ -1,43 +1,46 @@
-# Verification - 0.1.0
+# Verification - 0.1.1
 
-Checked on 2026-10-10 against the installed EveJS 0.12.9 Native source and
-build-3396210 client clock widget.
+Checked on 2026-10-19 against the installed EveJS 261018.1 Native source.
+The previous 0.12.9 source is retained as a separate exact approved baseline.
 
 ## Passed
 
-- Nine focused client checks: the real Windows local clock; both 2026 European
-  summer/winter transitions through the mod's native Windows converter;
-  fractional/negative offsets and date rollover; different client timezone
-  readings between refreshes; Neocom-only scoping; local tooltip and unchanged
-  calendar click method; startup/event cleanup; reconnect/idempotency; unknown
-  widgets; later mod wrappers; OS local-time fallback.
-- Six Node checks using the actual EveJS marshal codec: supported builder
-  identity; byte-preserving packet composition; malformed/non-login/pre-auth
-  pass-through and delivery-error recovery; current installed Asteroid Erosion
-  and NPC Market Buyers in both hook orders; AutoMining in both expression
-  orders; loader attachment to the actual native handshake class and retention
-  of its encryption path with account/config dependencies isolated.
-- Python 2.7 grammar parsing. The client checks execute our authored code and
-  inspected vendor widget classes in Python 3.11 with UI/service doubles.
-- Launcher ZIP inspect/import/scan/enable/disable/remove in a separate fixture;
-  ZIP CRC, explicit public-file list, SHA-256 receipt, and enabled-loader
-  preflight after installation.
+- Seven focused Node checks with the actual 261018.1 marshal codec and isolated
+  compilation of its actual handshake class. They cover exact reviewed source
+  hashes, CRLF normalization, rejection of source drift, exact packet splicing,
+  failure/pre-auth/non-login pass-through, staged Asteroid Erosion hook orders,
+  staged AutoMining expression orders, actual loader attachment, and native
+  authentication with all three companions together.
+- The loader also accepts an isolated fixture labeled 991231.99 with the
+  unchanged reviewed handshake and rejects one with changed source. Server
+  versions are advisory; no actual future server is claimed tested.
+- The authentication fixture uses in-memory accounts and isolated config. Two
+  connections of one account retain distinct new native client IDs. Native
+  acknowledgment and GPSTransportClosed objectex1 packets pass through byte for
+  byte. The actual AES sender retains valid framing and decryptable payloads.
+- Nine focused Python client checks cover the real local Windows clock, both
+  2026 European DST transitions through the Windows converter, negative and
+  fractional UTC offsets, date rollover, Neocom scoping, five-second refresh,
+  unchanged calendar click, reconnect/event cleanup, unknown widget rejection,
+  later wrappers and OS fallback. Python 2.7 grammar parsing also passes.
+- Clock tests execute authored code plus the previously inspected build-3396210
+  widget classes, using UI and service doubles. The server protocol profile
+  still targets client build 3396210.
 
-No live server was started or restarted by these checks. No Windows clock or
-timezone setting was changed. DST inputs were injected into GetSystemTime
-only inside the test process; Windows performed the timezone conversion.
+No live server or client was started or restarted for these checks. No account,
+player database, operating-system clock or timezone setting was changed. The
+native authentication fixture cannot write accounts and reports zero writes.
 
 ## Coverage limit
 
-On 2026-10-10, the user confirmed the installed mod works and supplied the
-in-game screenshot in `docs/local-clock.png`, showing 16:08 and UTC+02:00.
-This is user-reported live confirmation plus screenshot evidence. The agent
-did not operate the live client. DST transitions, multiple timezone readings,
-and calendar click preservation were checked in the focused offline tests;
-they were not separately exercised in live gameplay.
+This compatibility update has not been visually confirmed in the running new
+server/client combination. After enabling it, restart Game and reconnect each
+client. Confirm its Neocom clock matches that computer and still opens Calendar.
+The original 0.1.0 clock was user-confirmed in game on the previous server.
 
-Only EveJS 0.12.9 Native and the inspected build-3396210 widget contract are
-declared supported. No live Docker or other client-build coverage is claimed.
+These focused checks do not establish live multi-client gameplay, every locale,
+Docker support, or a different client build. Launcher install/enable validation
+for the final combined deployment belongs to its installation receipt.
 
 ## Implementation reference
 
