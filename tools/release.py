@@ -18,9 +18,9 @@ UPDATES = {
     "tagPrefix": "v",
 }
 PUBLIC_FILES = (
-    "CHANGELOG.md", "COMPATIBILITY-261018.1.md", "README.md", "RELEASING.md",
-    "VERIFICATION.md", "client/companion.py", "client/localtime.py",
-    "docs/local-clock.png", "evejs-launcher.mod.json", "lib/delivery.js", "loader.js",
+    "CHANGELOG.md", "client/companion.py", "client/localtime.py",
+    "COMPATIBILITY-261018.1.md", "COMPATIBILITY-261028.1.md",
+    "evejs-launcher.mod.json", "lib/delivery.js", "loader.js", "README.md", "VERIFICATION.md",
 )
 
 
@@ -50,7 +50,7 @@ def _read(source, name):
     return data
 
 
-def expected_assets(source: Path, tag: str | None = None) -> dict[str, bytes]:
+def expected_assets(source: Path, tag: str | None = None, prepared_zip: Path | None = None) -> dict[str, bytes]:
     source = source.resolve()
     files = {name: _read(source, name) for name in PUBLIC_FILES}
     manifest = json.loads(files["evejs-launcher.mod.json"], object_pairs_hook=_unique_object)
@@ -74,16 +74,37 @@ def expected_assets(source: Path, tag: str | None = None) -> dict[str, bytes]:
         raise ReleaseError("List the advisory reviewed EveJS versions.")
     _read(source, f"releases/{version}.md")
     filename = UPDATES["asset"].replace("{version}", version)
-    buffer = io.BytesIO()
-    with zipfile.ZipFile(buffer, "w", compression=zipfile.ZIP_STORED) as archive:
-        for name, data in files.items():
-            entry = zipfile.ZipInfo("LocaltimeZonePatch/" + name, (2000, 1, 1, 0, 0, 0))
-            entry.create_system = 3
-            entry.external_attr = 0o100644 << 16
-            archive.writestr(entry, data)
+    if prepared_zip is not None:
+        if prepared_zip.is_symlink() or not prepared_zip.is_file():
+            raise ReleaseError("The approved ZIP must be an ordinary file.")
+        zip_bytes = prepared_zip.read_bytes()
+        try:
+            with zipfile.ZipFile(io.BytesIO(zip_bytes)) as archive:
+                if archive.namelist() != ["LocaltimeZonePatch/" + name for name in files]:
+                    raise ReleaseError("Approved ZIP members differ from the public allowlist.")
+                if archive.testzip() is not None:
+                    raise ReleaseError("Approved ZIP has a CRC failure.")
+                for name, data in files.items():
+                    if archive.read("LocaltimeZonePatch/" + name) != data:
+                        raise ReleaseError(f"Approved ZIP payload differs from source: {name}")
+        except zipfile.BadZipFile as exc:
+            raise ReleaseError("The approved ZIP is invalid.") from exc
+    else:
+        # Match the 0.1.2 installed/tested package recipe. Set Windows metadata
+        # explicitly so source builds on Linux use the same container fields.
+        # --prepared-zip preserves already approved bytes without recompression.
+        buffer = io.BytesIO()
+        with zipfile.ZipFile(buffer, "w", compression=zipfile.ZIP_DEFLATED, compresslevel=9) as archive:
+            for name, data in files.items():
+                entry = zipfile.ZipInfo("LocaltimeZonePatch/" + name, (2026, 10, 29, 0, 0, 0))
+                entry.create_system = 0
+                entry.external_attr = 0o600 << 16
+                entry.compress_type = zipfile.ZIP_DEFLATED
+                archive.writestr(entry, data)
+        zip_bytes = buffer.getvalue()
     sidecar = dict(schemaVersion=1, id=MOD_ID, version=version, asset=filename, evejsVersions=versions)
     assets = {
-        filename: buffer.getvalue(),
+        filename: zip_bytes,
         filename[:-4] + ".update.json": (json.dumps(sidecar, indent=2) + "\n").encode("utf-8"),
     }
     assets["SHA256SUMS.txt"] = "".join(
@@ -92,8 +113,8 @@ def expected_assets(source: Path, tag: str | None = None) -> dict[str, bytes]:
     return assets
 
 
-def build_or_verify(source: Path, output: Path, *, tag=None, verify=False):
-    assets = expected_assets(source, tag)
+def build_or_verify(source: Path, output: Path, *, tag=None, verify=False, prepared_zip=None):
+    assets = expected_assets(source, tag, prepared_zip)
     output = output.resolve()
     if output == source.resolve():
         raise ReleaseError("Use a separate output directory.")
@@ -116,7 +137,7 @@ def build_or_verify(source: Path, output: Path, *, tag=None, verify=False):
             if not path.exists():
                 with path.open("xb") as handle:
                     handle.write(data)
-        build_or_verify(source, output, tag=tag, verify=True)
+        build_or_verify(source, output, tag=tag, verify=True, prepared_zip=prepared_zip)
     return assets
 
 
@@ -125,10 +146,11 @@ def main():
     parser.add_argument("--source", type=Path, default=Path(__file__).resolve().parents[1])
     parser.add_argument("--out", type=Path, default=Path("dist"))
     parser.add_argument("--tag")
+    parser.add_argument("--prepared-zip", type=Path, help="Validate and retain exact already-tested ZIP bytes.")
     parser.add_argument("--verify", action="store_true")
     args = parser.parse_args()
     try:
-        assets = build_or_verify(args.source, args.out, tag=args.tag, verify=args.verify)
+        assets = build_or_verify(args.source, args.out, tag=args.tag, verify=args.verify, prepared_zip=args.prepared_zip)
     except (ReleaseError, OSError, json.JSONDecodeError) as exc:
         parser.exit(1, f"Release validation failed: {exc}\n")
     for name, data in assets.items():

@@ -1,64 +1,51 @@
-# Verification - 0.1.1
+# Verification - 0.1.2
 
-Checked on 2026-10-19 against the installed EveJS 261018.1 Native source.
-The previous 0.12.9 source is retained as a separate exact approved baseline.
+Checked on 2026-10-29 against the current EveJS 261028.1 Native installation.
+This is a compatibility/package update. Clock and login behaviour are unchanged;
+only the descriptor, version diagnostic strings and documentation change.
 
-## Passed
+Seven focused Node checks pass using the actual new marshal codec and isolated
+compilation of the actual handshake class. They cover reviewed source hashes,
+line-ending normalization, source-drift rejection, malformed payload bounds,
+exact login packet splicing, unchanged timestamps, pre-authentication/non-login
+pass-through, error fallback, loader attachment and encryption framing.
 
-- Seven focused Node checks with the actual 261018.1 marshal codec and isolated
-  compilation of its actual handshake class. They cover exact reviewed source
-  hashes, CRLF normalization, rejection of source drift, exact packet splicing,
-  failure/pre-auth/non-login pass-through, staged Asteroid Erosion hook orders,
-  staged AutoMining expression orders, actual loader attachment, and native
-  authentication with all three companions together.
-- The loader also accepts an isolated fixture labeled 991231.99 with the
-  unchanged reviewed handshake and rejects one with changed source. Server
-  versions are advisory; no actual future server is claimed tested.
-- The authentication fixture uses in-memory accounts and isolated config. Two
-  connections of one account retain distinct new native client IDs. Native
-  acknowledgment and GPSTransportClosed objectex1 packets pass through byte for
-  byte. The actual AES sender retains valid framing and decryptable payloads.
-- Nine focused Python client checks cover the real local Windows clock, both
-  2026 European DST transitions through the Windows converter, negative and
-  fractional UTC offsets, date rollover, Neocom scoping, five-second refresh,
-  unchanged calendar click, reconnect/event cleanup, unknown widget rejection,
-  later wrappers and OS fallback. Python 2.7 grammar parsing also passes.
-- Clock tests execute authored code plus the previously inspected build-3396210
-  widget classes, using UI and service doubles. The server protocol profile
-  still targets client build 3396210.
-- Seven release-contract checks verify deterministic public bytes, a complete
-  ZIP/sidecar/checksum set, exact payload contents, required update source and
-  rejection of mismatched tags, missing notes or changed release assets.
-- The production Launcher checker accepts the matching release metadata for a
-  0.1.0 installation after the one-time source addition and returns no update
-  for an already installed 0.1.1. Its actual package replacement pipeline passes
-  in separate enabled and disabled disposable roots, retaining those states and
-  unrelated files. The initial 0.1.0/0.1.1 packages are confirmed to lack update
-  discovery; this corrected package keeps all four original 0.1.1 runtime files
-  byte for byte.
+The native authentication fixture composes Localtime with the currently
+installed AutoMining, Asteroid Erosion and NPC Buyers delivery helpers, plus the
+exact Launcher shared Mods menu bridge. Both send-hook orders pass. Two sessions
+for one in-memory account retain distinct connection IDs; acknowledgments and
+transport-close packets remain byte-identical and the native AES payload decrypts.
+The fixture attempts zero account writes. It starts no game server, network
+listener or market daemon and opens no player database. This tests Localtime's
+composition; it does not establish the other mods' gameplay compatibility.
 
-No live server or client was started or restarted for these checks. No account,
-player database, operating-system clock or timezone setting was changed. The
-native authentication fixture cannot write accounts and reports zero writes.
+Nine Python client checks pass using the inspected build-3396210 widget classes
+with UI/service doubles. They cover this computer's real Windows local clock,
+both European 2026 DST transitions through the Windows converter, fractional and
+negative UTC offsets, date rollover, a timezone change between refreshes, Neocom
+scoping, the five-second refresh, tooltip, unchanged calendar click, disconnect
+events, repeated bootstrap/reconnect, later wrappers, unknown widgets and OS
+fallback. Python 2.7 grammar parsing passes. Windows time settings are read-only.
 
-## Coverage limit
+The three relevant entries in the actual configured client's code.ccp match
+their previously inspected hashes exactly. Localtime does not edit that archive,
+add a menu/configuration, or alter server FILETIME, simulation time or saved data.
+The 261028.1 handshake is byte-identical to the supported 261018.1 handshake.
 
-This compatibility update has not been visually confirmed in the running new
-server/client combination. After enabling it, restart Game and reconnect each
-client. Confirm its Neocom clock matches that computer and still opens Calendar.
-The original 0.1.0 clock was user-confirmed in game on the previous server.
+## Retail-client evidence and limits
 
-These focused checks do not establish live multi-client gameplay, every locale,
-Docker support, or a different client build. Launcher install/enable validation
-for the final combined deployment belongs to its installation receipt.
+Josh reports the existing 0.1.1 clock working on 261028.1. An existing local
+retail-client log also records EVEJS_LOCALTIME:READY:0.1.1 on 2026-10-29. That
+establishes client attachment, not a new screenshot/visual or reconnect test.
+No retail client or live server was started/restarted for this update. The 0.1.2
+version diagnostics have therefore not been observed in a new retail session.
+They appear after the next normal Game restart and client reconnect.
 
-## Implementation reference
+Docker, other client builds, visual multi-client gameplay and every Windows
+timezone/language combination remain outside this focused check. Existing
+translation payloads are preserved; Localtime's clock and ISO-style tooltip use
+the same locale-independent display as before.
 
-Windows documents that
-[SystemTimeToTzSpecificLocalTime](https://learn.microsoft.com/en-us/windows/win32/api/timezoneapi/nf-timezoneapi-systemtimetotzspecificlocaltime)
-uses the current active timezone when passed NULL and applies daylight saving
-time for the instant being converted. The mod invokes that read-only API on
-each display refresh. It never calls a system time or timezone setter.
-
-Private client inspection and test fixtures are excluded from the release ZIP.
-The package contains only authored mod source and documentation.
+The local compatibility folder retains focused test receipts, source/widget
+hashes, the prior payload ZIP, package hashes and the narrow installation receipt.
+Private client references and test doubles are excluded from the distributable ZIP.

@@ -104,7 +104,7 @@ class _LocalClockPatch(object):
                 pending.extend(list(getattr(widget, 'children', ())))
         except Exception:
             pass
-        self.diagnostic('READY:0.1.1')
+        self.diagnostic('READY:0.1.2')
 
     def start(self):
         try:

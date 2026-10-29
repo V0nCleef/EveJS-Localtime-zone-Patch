@@ -31,16 +31,27 @@ manual migration is planned: the Launcher checks it again before installation.
 
 ```text
 python -m unittest discover -s tools -p "test_release.py" -v
-python tools/release.py --tag v0.1.1 --out dist
-python tools/release.py --tag v0.1.1 --out dist --verify
+python tools/release.py --tag v0.1.2 --out dist --prepared-zip /path/to/approved/EveJS-Localtime-zone-Patch-0.1.2.zip
+python tools/release.py --tag v0.1.2 --out dist --prepared-zip /path/to/approved/EveJS-Localtime-zone-Patch-0.1.2.zip --verify
 ```
 
 Use the new version's tag for future releases. The builder rejects a mismatched
 tag, missing update source, changed source contract, absent release notes, unsafe
 public paths or an existing output with different bytes. It never runs mod code.
-The ZIP uses a fixed timestamp, stable member order and stored bytes for
-reproducibility across Python/zlib versions. Its explicit file allowlist excludes
-private inspection material, test fixtures, `.git`, caches and release tools.
+`--prepared-zip` validates every member against the exact public source allowlist
+and retains the already installed/tested ZIP bytes without recompression. Missing,
+extra, duplicate or changed members are rejected. This is the publication path
+for 0.1.2, whose approved SHA-256 is
+`84ae191c9084103cca6bdee6fb15faada59246e63e546d93d6aa3b47c67a5377`.
+Never replace that candidate to hide a different repack.
+
+Without `--prepared-zip`, the tool builds source artifacts for CI using fixed
+container fields, compression and member order. Repeated builds on the same
+runtime are identical; different zlib versions are not promised identical bytes.
+In either path, exact uncompressed source members are enforced. The ten-file
+allowlist excludes private inspection material, test fixtures, `.git`, caches,
+release tools and the repository-only screenshot/releasing guide. CI runs the
+focused packaging checks, not a game server or client.
 
 Publish all three generated files to the same GitHub release:
 

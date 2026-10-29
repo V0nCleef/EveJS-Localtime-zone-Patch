@@ -28,17 +28,14 @@ version policy; it does not establish support for an actual future server.
 
 ## Installation and settings
 
-For a new installation, use Mods -> Add ZIP and enable the Localtime entry.
-When updating from 0.1.0, stop Game and remove the old Localtime entry through
-Mods before adding the 0.1.1 ZIP. The package retains the same mod ID
-`evejs-localtime-zone-patch` and has no saved configuration to transfer.
-The first 0.1.1 download also lacked update discovery metadata. It uses the
-same runtime as the corrected 0.1.1 package; see README for the one-time migration.
+Replace the existing mod payload with this candidate and enable its loader using
+the Launcher. Keep the existing mod ID `evejs-localtime-zone-patch` and the
+installation folder so Launcher activation state stays associated with it.
 
 This mod has no settings file or configurable user state. Each client reads its
 own operating-system timezone. Preserve all unrelated mods, Launcher state,
 server config, client files and databases during installation. Restart Game and
-reconnect clients after enabling the new version.
+reconnect clients after enabling the candidate.
 
-See VERIFICATION.md for performed checks and live
+See VERIFICATION.md and the deployment receipt for performed checks and live
 coverage limits. The package itself does not install or restart anything.

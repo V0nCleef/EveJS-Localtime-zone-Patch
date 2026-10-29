@@ -50,6 +50,32 @@ class ReleaseTests(unittest.TestCase):
         self.assertEqual(first, release.build_or_verify(self.source, self.root / "second"))
         self.assertEqual(first, release.build_or_verify(self.source, self.output))
 
+    def test_approved_zip_bytes_are_preserved_without_recompression(self):
+        data = io.BytesIO()
+        with zipfile.ZipFile(data, "w", compression=zipfile.ZIP_STORED) as archive:
+            for name in release.PUBLIC_FILES:
+                archive.writestr("LocaltimeZonePatch/" + name, (self.source / name).read_bytes())
+        approved = self.root / "approved.zip"
+        approved.write_bytes(data.getvalue())
+        assets = release.build_or_verify(self.source, self.output, prepared_zip=approved)
+        name = release.UPDATES['asset'].replace('{version}', self.version)
+        self.assertEqual(assets[name], approved.read_bytes())
+        release.build_or_verify(self.source, self.output, prepared_zip=approved, verify=True)
+
+    def test_approved_zip_cannot_hide_extra_files_or_changed_payload(self):
+        approved = self.root / "approved.zip"
+        for extra in (False, True):
+            with zipfile.ZipFile(approved, 'w') as archive:
+                for name in release.PUBLIC_FILES:
+                    content = (self.source / name).read_bytes()
+                    if not extra and name == 'loader.js':
+                        content += b'\n// unreviewed edit\n'
+                    archive.writestr('LocaltimeZonePatch/' + name, content)
+                if extra:
+                    archive.writestr('private.txt', b'not public')
+            with self.assertRaisesRegex(release.ReleaseError, 'payload differs|members differ'):
+                release.expected_assets(self.source, prepared_zip=approved)
+
     def test_missing_sidecar_is_rejected(self):
         assets = release.build_or_verify(self.source, self.output)
         next(self.output.glob("*.update.json")).unlink()
