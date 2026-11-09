@@ -19,7 +19,7 @@ UPDATES = {
 }
 PUBLIC_FILES = (
     "CHANGELOG.md", "client/companion.py", "client/localtime.py",
-    "COMPATIBILITY-261018.1.md", "COMPATIBILITY-261028.1.md",
+    "COMPATIBILITY-261018.1.md", "COMPATIBILITY-261028.1.md", "COMPATIBILITY-261108.1.md",
     "evejs-launcher.mod.json", "lib/delivery.js", "loader.js", "README.md", "VERIFICATION.md",
 )
 

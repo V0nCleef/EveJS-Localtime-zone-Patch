@@ -48,7 +48,7 @@ Never replace that candidate to hide a different repack.
 Without `--prepared-zip`, the tool builds source artifacts for CI using fixed
 container fields, compression and member order. Repeated builds on the same
 runtime are identical; different zlib versions are not promised identical bytes.
-In either path, exact uncompressed source members are enforced. The ten-file
+In either path, exact uncompressed source members are enforced. The eleven-file
 allowlist excludes private inspection material, test fixtures, `.git`, caches,
 release tools and the repository-only screenshot/releasing guide. CI runs the
 focused packaging checks, not a game server or client.

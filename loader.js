@@ -51,7 +51,7 @@ function install(root = resolveRoot()) {
     return exports;
   };
   globalThis[key] = state;
-  console.log("[EveJS Localtime zone Patch] v0.1.2 enabled; each client uses its own local timezone");
+  console.log("[EveJS Localtime zone Patch] v0.1.3 enabled; each client uses its own local timezone");
   return state;
 }
 

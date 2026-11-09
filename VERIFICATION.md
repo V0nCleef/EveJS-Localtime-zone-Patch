@@ -1,4 +1,33 @@
-# Verification - 0.1.2
+# Verification - 0.1.3 local candidate
+
+Checked on 2026-11-09 against the actual 261108.1 archive and extracted tree.
+Archive SHA-256: `373266a05fd9acf0c220d06d5469907637a6d09bf2cf926adf4aaee97a3ccc59`.
+Seven Node checks pass with the release's handshake, codec and frame helper:
+source admission/drift rejection, numeric-zero and legacy-false signatures,
+byte-preserving splicing, once-only delivery, error/inactive pass-through,
+native authentication, distinct connection IDs, new SSO keys, transport closes,
+AES-CBC, frame bounds, unchanged IV on rejection and actual loader attachment.
+Account/config dependencies are isolated; zero write attempts, no service starts.
+Unmodified 0.1.2 failed five of the original six checks first. The seventh
+checks the exact optional GridCheck client-agent source, its two call sites,
+composition with Localtime, source-drift rejection and byte-exact reversion.
+
+Nine existing client-widget tests pass against reverified build-3396210 classes,
+including real Windows time, DST, offsets, date rollover, refresh, tooltip,
+calendar click handler, repeated bootstrap and disconnect cleanup. Python 2.7
+grammar passes. The complete code.ccp and three widget hashes still match the
+inspected references. The local-time reader remains byte-identical to 0.1.2.
+
+Real-client GridCheck, visual, mixed-mod runtime and soak qualification are
+pending. The prepared scenario reads the actual Neocom label and tooltip,
+checks bounded hooks, and records a screenshot. Reconnect requires a fresh
+test-client launch in the orchestrator's exclusive slot. Native timezone/DST
+choices, source/archives/caches and saved data are unchanged. Docker and other
+client builds remain unqualified. See COMPATIBILITY-261108.1.md.
+
+The following records are historical evidence for 0.1.2, not 261108.1 passes.
+
+## Historical 0.1.2 verification
 
 Checked on 2026-10-29 against the current EveJS 261028.1 Native installation.
 This is a compatibility/package update. Clock and login behaviour are unchanged;
