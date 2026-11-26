@@ -5,11 +5,13 @@ timezone. Summer/winter time follows the operating system's daylight saving
 settings. The date tooltip also shows the local date, time and UTC offset.
 No menu, settings or timezone configuration are required.
 
-Version 0.1.4 is an unpublished compatibility candidate for EveJS 261115.2 Native
-with the build-3396210 Windows client. Focused native login, delivery composition
-and client-widget tests are recorded in COMPATIBILITY-261115.2.md. Actual new-version
-GridCheck and combined-mod retail-client qualification remain pending.
-Reviewed support for 0.12.9, 261018.1, 261028.1 and 261108.1 is retained.
+Version 0.1.5 adds reviewed Native compatibility declarations for EveJS 261125.3
+and 261126.2 with the build-3724492 Windows client. This removes the Launcher's
+unsupported-version warning for these releases. Support for 0.12.9, 261018.1,
+261028.1, 261108.1 and 261115.2 is retained. The clock behavior is unchanged.
+Windows Native packet and exact client-bytecode offline checks pass; rendered
+client/network acceptance and Linux runtime qualification remain pending.
+See COMPATIBILITY-261126.2.md and VERIFICATION.md for the evidence and limits.
 The listed server versions are advisory: a newer
 version may be tried if its handshake still matches an exact reviewed source
 baseline. Changed login code keeps this mod inactive. Other versions are not
@@ -18,7 +20,7 @@ thereby declared tested. Docker and other client builds remain unverified.
 ## Install
 
 In the EveJS Launcher, use Mods -> Add ZIP and select
-`EveJS-Localtime-zone-Patch-0.1.4.zip`. Enable the mod, restart Game, then
+`EveJS-Localtime-zone-Patch-0.1.5.zip`. Enable the mod, restart Game, then
 reconnect each EVE client. A client already logged in keeps its old clock until
 it reconnects to a server started with the mod enabled.
 
@@ -51,7 +53,7 @@ builder or widget leaves the mod inactive and preserves normal login/time.
 For troubleshooting, the server prints `[EveJS Localtime zone Patch]` status.
 The client records a small status log at
 `cache:/evejs-localtime-zone-patch.log`; successful attachment is
-`EVEJS_LOCALTIME:READY:0.1.4`. The log contains no character or account data.
+`EVEJS_LOCALTIME:READY:0.1.5`. The log contains no character or account data.
 
 ## Verification
 

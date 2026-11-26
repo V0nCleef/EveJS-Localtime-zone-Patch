@@ -1,5 +1,17 @@
 # Release packaging
 
+For 0.1.5, build and verify the complete new source package with:
+
+```text
+python -m unittest discover -s tools -p "test_release.py" -v
+python tools/release.py --tag v0.1.5 --out dist
+python tools/release.py --tag v0.1.5 --out dist --verify
+```
+
+The thirteen-file package allowlist includes COMPATIBILITY-261126.2.md. The
+0.1.4 prepared-ZIP instructions below describe its preserved historical release;
+do not reuse or replace the 0.1.4 assets when publishing 0.1.5.
+
 The Launcher needs both a manifest update source and a matching release sidecar.
 A ZIP alone is installable with Add ZIP but will not provide update discovery.
 
@@ -52,7 +64,7 @@ immutable ZIP. Preserve every ZIP payload file in the tagged source verbatim.
 Without `--prepared-zip`, the tool builds source artifacts for CI using fixed
 container fields, compression and member order. Repeated builds on the same
 runtime are identical; different zlib versions are not promised identical bytes.
-In either path, exact uncompressed source members are enforced. The twelve-file
+In either path, exact uncompressed source members are enforced. The public-file
 allowlist excludes private inspection material, test fixtures, `.git`, caches,
 release tools and the repository-only screenshot/releasing guide. CI runs the
 focused packaging checks, not a game server or client.

@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.1.5 - 2026-11-26
+
+- Declare reviewed Native compatibility with EveJS 261125.3 and 261126.2,
+  using the build-3724492 Windows client, to resolve the Launcher warning.
+- Preserve every earlier supported version and the exact login-source guards.
+- Keep local clock, timezone, tooltip and reconnect behavior unchanged.
+- Verify native packets and exact client bytecode offline; full retail-client
+  and Linux runtime qualification remain pending. Docker support is unchanged.
+
 ## 0.1.4 candidate - 2026-11-16
 
 - Admit the exact reviewed EveJS 261115.2 handshake and optional GridCheck 0.3.6

@@ -1,35 +1,50 @@
-# Verification - 0.1.4 candidate
+# Verification - 0.1.5
 
-Target: EveJS 261115.2 Native, Windows client build 3396210. Release archive
-SHA-256: `899ca7dd19abd4d9441966a60bbecc37008b459284c0601ae2af8edc29271be0`.
+Targets: EveJS 261125.3 and 261126.2 Native, Windows client build 3724492.
+The 261115.2/build-3396210 stack is retained as a regression control.
 
-Focused tests compile the exact release handshake with isolated account/config
-dependencies and use its real marshal codec, frame helpers and server-health
-delivery module. They cover exact-source admission/drift rejection, Placebo
-representations, byte-preserving replacement, once-only delivery, malformed or
-failed pass-through, authentication success/failure, connection IDs, SSO keys,
-transport closes, AES-CBC, frame bounds, loader attachment and exact optional
-GridCheck instrumentation.
+## Server and delivery
 
-The new staff server-health payload is retained byte-exact inside Localtime.
-Player and disabled-health controls omit it as upstream intends. Twenty-four
-helper orders compose Localtime with the installed Asteroid Erosion and Buyers
-helpers and AutoMining's shared login delivery runtime. Account roles and the
-shared provider/receipt are fixtures; these checks do not establish the other
-mods' gameplay or client execution. Zero account writes and no service starts.
+Focused checks compile the exact inspected server handshake in memory with
+account, configuration and service doubles. They use the real marshal codec,
+frame helpers and staff-health delivery module. They exercise exact-source
+admission and drift rejection, numeric-zero and legacy-false Placebo signatures,
+byte-preserving replacement, once-per-connection delivery, malformed/failed
+pass-through, authentication success/failure, distinct connection IDs, SSO keys,
+transport closes, AES-CBC, frame bounds and loader attachment.
 
-Nine widget controls use the inspected build-3396210 classes with UI/service
-doubles. They cover the real Windows clock, both 2026 European DST transitions,
-fractional/negative offsets, date rollover, refresh, Neocom scoping, tooltip,
-original Calendar handler, disconnect cleanup, repeated bootstrap, unknown
-widgets and OS fallback. Python 2.7 grammar is checked; controls execute under
-Python 3.11. The local-time reader is byte-identical to installed 0.1.3.
+The conditional staff-health payload remains intact. Twenty-four delivery-hook
+orders preserve the native expression and shared-provider receipt. These are
+delivery-helper checks, not gameplay qualification of the other mods. Four
+processes with different server timezones emit identical Localtime payloads.
+The exact optional GridCheck client-agent v1 instrumentation is admitted and
+reverts byte-exactly. No database or account writes or service starts occur.
 
-Actual new-version GridCheck/retail-client and combined-mod acceptance are
-required and pending coordinator scheduling. These tests claim no 261115.2
-visual, reconnect, multi-client or soak pass. Docker is undeclared/unqualified.
-See COMPATIBILITY-261115.2.md. References and fixtures are excluded from the ZIP.
+## Client ABI and time
 
-No physical client, server clock, OS timezone, saves, databases or live files
-are changed. External report.json and receipts hold executed results, package
-hashes and the pending runtime plan.
+The exact compiled Authenticate, signed-function executor, Placebo verifier and
+clock classes from builds 3724492 and 3396210 execute in each build's own copied
+Python 2.7 Stackless runtime. Transport, challenge hashing, services and UI are
+doubles. The harness verifies that it loaded the copied interpreter and did not
+load blue.dll or exefile.exe.
+
+Controls cover original-result preservation, invalid-signature rejection,
+real Windows ctypes/time calls, separate machine timezone rules, fractional and
+negative offsets, local-date rollover, DST and disabled DST, zone changes,
+OS-localtime fallback, clock scope, date/offset tooltip, original Calendar
+callback, disconnect restoration and three repeated login/reconnect cycles.
+Separate widget controls also exercise both European DST transitions and
+unsupported-widget rejection.
+
+## Packaging and limits
+
+The release ZIP uses an explicit public-file allowlist. Its manifest and update
+sidecar agree on the mod ID, version, asset and advisory EveJS versions.
+Packaging checks reject changed/extra members, duplicate JSON fields, mismatched
+tags and incomplete update metadata. The production Launcher update/import
+checks run in disposable local roots, preserving unrelated fixture files.
+
+No rendered 3724492 client, real network/game integration or Linux/Proton runtime
+pass is claimed. Docker remains outside the declared Native backend. Private
+client bytecode, interpreters, fixture data, local paths and test receipts are
+excluded from public source and release assets.
